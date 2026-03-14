@@ -7,7 +7,7 @@ A fully self-contained, interactive learning hub for Google Analytics 4 (GA4). N
 
 ## 🔗 Live Demo
 
-[View on GitHub Pages](https://YOUR-USERNAME.github.io/YOUR-REPO-NAME/)
+[View on GitHub Pages](https://mdasadurrahamantareq.github.io/Google-Analytics/)
 
 ---
 
