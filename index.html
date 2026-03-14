@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GA4 Learning Hub — Understand Analytics, Simply</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0e1a;
+  --surface: #111827;
+  --surface2: #1a2236;
+  --border: #1e2d47;
+  --blue: #4f9cf9;
+  --blue-soft: #1a3a6b;
+  --green: #34d399;
+  --amber: #fbbf24;
+  --red: #f87171;
+  --purple: #a78bfa;
+  --text: #e2e8f0;
+  --muted: #64748b;
+  --accent: #4f9cf9;
+  --radius: 16px;
+  --radius-sm: 10px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  overflow-x: hidden;
+}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--blue-soft); border-radius: 3px; }
+
+/* ─── NOISE OVERLAY ─── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 9999; opacity: .4;
+}
+
+/* ─── NAV ─── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(10,14,26,.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 clamp(1rem,4vw,3rem);
+  height: 64px;
+}
+.nav-brand {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: var(--blue);
+  letter-spacing: -.5px;
+  text-decoration: none;
+}
+.nav-brand span { color: var(--text); }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a {
+  color: var(--muted); text-decoration: none; font-size: .9rem;
+  font-weight: 500; transition: color .2s;
+}
+.nav-links a:hover { color: var(--text); }
+.nav-cta {
+  background: var(--blue); color: #fff; border: none;
+  padding: .45rem 1.1rem; border-radius: 8px;
+  font-family: 'DM Sans', sans-serif; font-size: .85rem; font-weight: 600;
+  cursor: pointer; transition: opacity .2s;
+}
+.nav-cta:hover { opacity: .85; }
+
+/* ─── HERO ─── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center;
+  padding: 7rem clamp(1rem,5vw,4rem) 4rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(79,156,249,.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(79,156,249,.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 40%, transparent 100%);
+}
+.hero-glow {
+  position: absolute;
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(79,156,249,.15) 0%, transparent 70%);
+  top: 50%; left: 50%; transform: translate(-50%,-60%);
+  pointer-events: none;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: .5rem;
+  background: rgba(79,156,249,.1); border: 1px solid rgba(79,156,249,.3);
+  color: var(--blue); border-radius: 999px;
+  padding: .35rem 1rem; font-size: .8rem; font-weight: 600;
+  margin-bottom: 1.5rem; letter-spacing: .5px;
+  animation: fadeUp .6s ease both;
+}
+.hero h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2.8rem, 6vw, 5.5rem);
+  font-weight: 800; line-height: 1.05;
+  letter-spacing: -2px;
+  animation: fadeUp .6s .1s ease both;
+}
+.hero h1 .accent { color: var(--blue); }
+.hero h1 .line2 { display: block; color: var(--muted); font-weight: 600; }
+.hero p {
+  max-width: 560px; font-size: 1.1rem; color: var(--muted);
+  margin: 1.5rem auto 0;
+  animation: fadeUp .6s .2s ease both;
+}
+.hero-actions {
+  display: flex; gap: 1rem; margin-top: 2.5rem; justify-content: center; flex-wrap: wrap;
+  animation: fadeUp .6s .3s ease both;
+}
+.btn-primary {
+  background: var(--blue); color: #fff;
+  padding: .8rem 2rem; border-radius: var(--radius-sm);
+  font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 1rem;
+  border: none; cursor: pointer; text-decoration: none;
+  transition: transform .2s, box-shadow .2s;
+  box-shadow: 0 0 30px rgba(79,156,249,.3);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(79,156,249,.5); }
+.btn-ghost {
+  background: transparent; color: var(--text);
+  padding: .8rem 2rem; border-radius: var(--radius-sm);
+  font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 1rem;
+  border: 1px solid var(--border); cursor: pointer; text-decoration: none;
+  transition: border-color .2s, background .2s;
+}
+.btn-ghost:hover { border-color: var(--blue); background: rgba(79,156,249,.06); }
+
+.hero-stats {
+  display: flex; gap: 3rem; margin-top: 4rem; justify-content: center; flex-wrap: wrap;
+  animation: fadeUp .6s .4s ease both;
+}
+.hero-stat { text-align: center; }
+.hero-stat .num {
+  font-family: 'Syne', sans-serif;
+  font-size: 2rem; font-weight: 800; color: var(--blue);
+}
+.hero-stat .lbl { font-size: .8rem; color: var(--muted); margin-top: .2rem; }
+
+/* ─── SECTIONS ─── */
+section { padding: 5rem clamp(1rem,5vw,4rem); max-width: 1200px; margin: 0 auto; }
+.section-label {
+  font-size: .75rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--blue); margin-bottom: .75rem;
+}
+.section-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  font-weight: 800; line-height: 1.1;
+  letter-spacing: -1px; margin-bottom: 1rem;
+}
+.section-sub { color: var(--muted); font-size: 1.05rem; max-width: 540px; }
+
+/* ─── CONCEPTS GRID ─── */
+.concepts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.25rem; margin-top: 3rem;
+}
+.concept-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+  cursor: pointer;
+  transition: transform .25s, border-color .25s, box-shadow .25s;
+  position: relative; overflow: hidden;
+}
+.concept-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--card-color, var(--blue));
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .3s ease;
+}
+.concept-card:hover::before { transform: scaleX(1); }
+.concept-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--card-color, var(--blue));
+  box-shadow: 0 16px 48px rgba(0,0,0,.4);
+}
+.concept-icon {
+  font-size: 2rem; margin-bottom: 1rem;
+  width: 52px; height: 52px;
+  background: var(--surface2);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+}
+.concept-card h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.05rem; font-weight: 700; margin-bottom: .5rem;
+}
+.concept-card p { font-size: .9rem; color: var(--muted); line-height: 1.55; }
+.concept-tag {
+  display: inline-block;
+  margin-top: 1rem; padding: .25rem .7rem;
+  background: rgba(79,156,249,.1); color: var(--blue);
+  border-radius: 999px; font-size: .75rem; font-weight: 600;
+}
+
+/* ─── INTERACTIVE GLOSSARY ─── */
+#glossary { max-width: 1200px; }
+.search-box {
+  position: relative; margin: 2rem 0 1.5rem;
+}
+.search-box input {
+  width: 100%; padding: 1rem 1rem 1rem 3.5rem;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); color: var(--text);
+  font-family: 'DM Sans', sans-serif; font-size: 1rem;
+  outline: none; transition: border-color .2s;
+}
+.search-box input::placeholder { color: var(--muted); }
+.search-box input:focus { border-color: var(--blue); }
+.search-icon {
+  position: absolute; left: 1.1rem; top: 50%; transform: translateY(-50%);
+  color: var(--muted); font-size: 1.1rem; pointer-events: none;
+}
+.glossary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+.glossary-item {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 1.25rem;
+  transition: border-color .2s;
+}
+.glossary-item:hover { border-color: var(--blue); }
+.glossary-item .term {
+  font-family: 'DM Mono', monospace; font-size: .9rem;
+  color: var(--blue); margin-bottom: .4rem; font-weight: 500;
+}
+.glossary-item .def { font-size: .88rem; color: var(--muted); line-height: 1.55; }
+.glossary-item.hidden { display: none; }
+
+/* ─── METRICS CALCULATOR ─── */
+.calc-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
+  margin-top: 2.5rem;
+}
+@media (max-width: 700px) { .calc-grid { grid-template-columns: 1fr; } }
+.calc-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 2rem;
+}
+.calc-card h3 {
+  font-family: 'Syne', sans-serif; font-size: 1.05rem; font-weight: 700;
+  margin-bottom: .4rem; display: flex; align-items: center; gap: .5rem;
+}
+.calc-card .formula {
+  font-family: 'DM Mono', monospace; font-size: .8rem;
+  color: var(--blue); background: rgba(79,156,249,.1);
+  padding: .4rem .8rem; border-radius: 6px; margin-bottom: 1.25rem;
+  display: inline-block;
+}
+.calc-inputs { display: flex; flex-direction: column; gap: .75rem; }
+.calc-field label { display: block; font-size: .8rem; color: var(--muted); margin-bottom: .3rem; font-weight: 500; }
+.calc-field input {
+  width: 100%; padding: .65rem .9rem;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 8px; color: var(--text);
+  font-family: 'DM Mono', monospace; font-size: .9rem;
+  outline: none; transition: border-color .2s;
+}
+.calc-field input:focus { border-color: var(--blue); }
+.calc-result {
+  margin-top: 1.25rem; padding: 1rem;
+  background: rgba(79,156,249,.08); border: 1px solid rgba(79,156,249,.2);
+  border-radius: 8px; text-align: center;
+}
+.calc-result .result-num {
+  font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800;
+  color: var(--blue);
+}
+.calc-result .result-label { font-size: .8rem; color: var(--muted); margin-top: .2rem; }
+.health-pill {
+  display: inline-block; padding: .2rem .7rem; border-radius: 999px;
+  font-size: .75rem; font-weight: 700; margin-top: .5rem;
+}
+.health-green { background: rgba(52,211,153,.15); color: var(--green); }
+.health-amber { background: rgba(251,191,36,.15); color: var(--amber); }
+.health-red { background: rgba(248,113,113,.15); color: var(--red); }
+
+/* ─── FUNNEL VIZ ─── */
+.funnel-section { max-width: 1200px; }
+.funnel-wrap {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;
+  align-items: start; margin-top: 2.5rem;
+}
+@media (max-width: 750px) { .funnel-wrap { grid-template-columns: 1fr; } }
+.funnel-stages { display: flex; flex-direction: column; gap: .75rem; }
+.funnel-stage {
+  position: relative; padding: 1rem 1.5rem;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer; transition: all .2s;
+  overflow: hidden;
+}
+.funnel-stage::after {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0;
+  background: var(--stage-color, var(--blue));
+  opacity: .12;
+  width: var(--pct, 100%);
+  transition: width .5s ease;
+}
+.funnel-stage:hover { border-color: var(--stage-color, var(--blue)); }
+.funnel-stage.active { border-color: var(--stage-color, var(--blue)); }
+.funnel-stage .stage-top { display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 1; }
+.funnel-stage .stage-name { font-weight: 600; font-size: .95rem; }
+.funnel-stage .stage-num { font-family: 'Syne', sans-serif; font-weight: 800; color: var(--stage-color, var(--blue)); }
+.funnel-stage .stage-sub { font-size: .8rem; color: var(--muted); margin-top: .2rem; position: relative; z-index: 1; }
+.funnel-detail {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 2rem;
+  position: sticky; top: 84px;
+}
+.funnel-detail h3 { font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 800; margin-bottom: 1rem; }
+.detail-stat { margin-bottom: 1rem; }
+.detail-stat .ds-label { font-size: .8rem; color: var(--muted); margin-bottom: .2rem; }
+.detail-stat .ds-value { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 800; }
+.detail-tip {
+  background: rgba(251,191,36,.08); border: 1px solid rgba(251,191,36,.2);
+  border-radius: 8px; padding: .9rem 1rem; margin-top: 1.25rem;
+}
+.detail-tip .tip-label { font-size: .75rem; font-weight: 700; color: var(--amber); margin-bottom: .3rem; }
+.detail-tip p { font-size: .85rem; color: var(--muted); line-height: 1.5; }
+
+/* ─── QUIZ ─── */
+.quiz-section { max-width: 1200px; }
+.quiz-wrap { margin-top: 2.5rem; }
+.quiz-progress {
+  display: flex; gap: .5rem; margin-bottom: 2rem;
+}
+.quiz-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--border); transition: background .3s;
+}
+.quiz-dot.done { background: var(--green); }
+.quiz-dot.active { background: var(--blue); }
+.quiz-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 2.5rem;
+  min-height: 280px;
+}
+.quiz-q { font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 700; margin-bottom: .5rem; }
+.quiz-context { font-size: .9rem; color: var(--muted); margin-bottom: 2rem; }
+.quiz-options { display: flex; flex-direction: column; gap: .75rem; }
+.quiz-option {
+  padding: 1rem 1.25rem;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); cursor: pointer;
+  font-size: .95rem; transition: all .2s;
+  display: flex; align-items: center; gap: .75rem;
+}
+.quiz-option:hover { border-color: var(--blue); background: rgba(79,156,249,.06); }
+.quiz-option.correct { border-color: var(--green); background: rgba(52,211,153,.08); color: var(--green); }
+.quiz-option.wrong { border-color: var(--red); background: rgba(248,113,113,.08); color: var(--red); }
+.quiz-option .opt-letter {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--border); display: flex; align-items: center; justify-content: center;
+  font-size: .8rem; font-weight: 700; flex-shrink: 0;
+  transition: background .2s;
+}
+.quiz-option.correct .opt-letter { background: var(--green); color: #fff; }
+.quiz-option.wrong .opt-letter { background: var(--red); color: #fff; }
+.quiz-feedback {
+  margin-top: 1.5rem; padding: 1.25rem;
+  border-radius: var(--radius-sm); display: none;
+}
+.quiz-feedback.show { display: block; }
+.quiz-feedback.correct-fb { background: rgba(52,211,153,.08); border: 1px solid rgba(52,211,153,.2); }
+.quiz-feedback.wrong-fb { background: rgba(248,113,113,.08); border: 1px solid rgba(248,113,113,.2); }
+.quiz-feedback p { font-size: .9rem; line-height: 1.55; }
+.quiz-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; }
+.quiz-score { font-family: 'Syne', sans-serif; font-weight: 800; color: var(--blue); }
+
+/* ─── REPORTS MAP ─── */
+.reports-map { margin-top: 2.5rem; }
+.report-group { margin-bottom: 2.5rem; }
+.report-group-title {
+  font-family: 'Syne', sans-serif; font-size: .85rem; font-weight: 800;
+  letter-spacing: 2px; text-transform: uppercase; color: var(--muted);
+  margin-bottom: 1rem; padding-bottom: .5rem;
+  border-bottom: 1px solid var(--border);
+}
+.report-items { display: flex; flex-wrap: wrap; gap: .75rem; }
+.report-item {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: .75rem 1rem;
+  cursor: pointer; transition: all .2s;
+  display: flex; align-items: center; gap: .6rem;
+  font-size: .88rem; font-weight: 500;
+}
+.report-item:hover {
+  border-color: var(--blue); background: rgba(79,156,249,.06);
+  transform: translateY(-1px);
+}
+.report-item .ri-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--dot-color, var(--blue)); flex-shrink: 0;
+}
+
+/* ─── MODAL ─── */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.7); backdrop-filter: blur(8px);
+  z-index: 200; display: flex; align-items: center; justify-content: center;
+  padding: 1rem; opacity: 0; pointer-events: none; transition: opacity .3s;
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+.modal {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 2.5rem;
+  max-width: 600px; width: 100%; max-height: 90vh; overflow-y: auto;
+  transform: translateY(20px); transition: transform .3s;
+}
+.modal-overlay.open .modal { transform: translateY(0); }
+.modal-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem; }
+.modal-title { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 800; }
+.modal-close {
+  background: none; border: none; color: var(--muted);
+  font-size: 1.5rem; cursor: pointer; line-height: 1;
+  transition: color .2s;
+}
+.modal-close:hover { color: var(--text); }
+.modal-body p { font-size: .95rem; color: var(--muted); line-height: 1.65; margin-bottom: 1rem; }
+.modal-body .highlight {
+  background: rgba(79,156,249,.08); border: 1px solid rgba(79,156,249,.2);
+  border-radius: 8px; padding: 1rem; margin: 1rem 0;
+}
+.modal-body .highlight strong { color: var(--blue); }
+.modal-tag { display: inline-block; padding: .25rem .7rem; border-radius: 999px; font-size: .75rem; font-weight: 700; margin: .25rem; }
+
+/* ─── FOOTER ─── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 3rem clamp(1rem,5vw,4rem);
+  text-align: center;
+}
+.footer-logo { font-family: 'Syne', sans-serif; font-weight: 800; color: var(--blue); font-size: 1.1rem; margin-bottom: .5rem; }
+footer p { font-size: .85rem; color: var(--muted); }
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadeUp .6s ease both; }
+
+/* ─── TABS ─── */
+.tabs { display: flex; gap: .5rem; margin-bottom: 2rem; flex-wrap: wrap; }
+.tab {
+  padding: .5rem 1.1rem; border-radius: 8px;
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--muted); font-size: .85rem; font-weight: 600;
+  cursor: pointer; transition: all .2s;
+}
+.tab:hover { border-color: var(--blue); color: var(--text); }
+.tab.active { background: var(--blue); border-color: var(--blue); color: #fff; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* ─── MOBILE NAV ─── */
+.menu-toggle { display: none; background: none; border: none; color: var(--text); font-size: 1.4rem; cursor: pointer; }
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .menu-toggle { display: block; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-brand">GA4<span>Hub</span></a>
+  <ul class="nav-links">
+    <li><a href="#concepts">Concepts</a></li>
+    <li><a href="#calculator">Calculator</a></li>
+    <li><a href="#funnel">Funnel</a></li>
+    <li><a href="#glossary">Glossary</a></li>
+    <li><a href="#quiz">Quiz</a></li>
+    <li><a href="#reports">Reports</a></li>
+  </ul>
+  <button class="nav-cta" onclick="document.getElementById('quiz').scrollIntoView({behavior:'smooth'})">Test Yourself →</button>
+  <button class="menu-toggle" onclick="this.textContent=this.textContent==='☰'?'✕':'☰'; document.querySelector('.nav-links').style.display=document.querySelector('.nav-links').style.display==='flex'?'none':'flex'">☰</button>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-badge">📊 Free · Interactive · No Signup Required</div>
+  <h1>
+    Understand Google Analytics 4
+    <span class="line2">Without the Confusion</span>
+  </h1>
+  <p>The complete learning resource for GA4 — plain English explanations, live metric calculators, interactive funnels, and quizzes. Built for everyone.</p>
+  <div class="hero-actions">
+    <a href="#concepts" class="btn-primary">Start Learning</a>
+    <a href="#calculator" class="btn-ghost">Try the Calculator</a>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num">25+</div><div class="lbl">Report Pages Covered</div></div>
+    <div class="hero-stat"><div class="num">40+</div><div class="lbl">Terms Explained</div></div>
+    <div class="hero-stat"><div class="num">8</div><div class="lbl">Metric Calculators</div></div>
+    <div class="hero-stat"><div class="num">10</div><div class="lbl">Quiz Questions</div></div>
+  </div>
+</div>
+
+<!-- CONCEPTS -->
+<section id="concepts">
+  <div class="section-label">The Basics</div>
+  <h2 class="section-title">Every GA4 Section Explained</h2>
+  <p class="section-sub">Click any card to learn what that section of GA4 does, in plain language.</p>
+  <div class="concepts-grid" id="conceptsGrid"></div>
+</section>
+
+<!-- CALCULATOR -->
+<section id="calculator">
+  <div class="section-label">Live Calculators</div>
+  <h2 class="section-title">Calculate Your Metrics</h2>
+  <p class="section-sub">Enter your real numbers and instantly see your KPIs — with a health check included.</p>
+  <div class="calc-grid" id="calcGrid"></div>
+</section>
+
+<!-- FUNNEL -->
+<section id="funnel" class="funnel-section">
+  <div class="section-label">Interactive Funnel</div>
+  <h2 class="section-title">The E-Commerce Funnel</h2>
+  <p class="section-sub">Click each stage to see what it means, why students drop off, and how to fix it.</p>
+  <div class="funnel-wrap">
+    <div class="funnel-stages" id="funnelStages"></div>
+    <div class="funnel-detail" id="funnelDetail">
+      <h3>👆 Click a stage to explore</h3>
+      <p style="color:var(--muted);font-size:.9rem">Select any funnel stage on the left to see detailed analytics guidance and actionable tips.</p>
+    </div>
+  </div>
+</section>
+
+<!-- GLOSSARY -->
+<section id="glossary">
+  <div class="section-label">Reference</div>
+  <h2 class="section-title">GA4 Glossary</h2>
+  <p class="section-sub">Every term you need to know. Search to find anything instantly.</p>
+  <div class="search-box">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="glossarySearch" placeholder="Search any term… (e.g. bounce rate, session, UTM)" oninput="filterGlossary(this.value)">
+  </div>
+  <div class="glossary-grid" id="glossaryGrid"></div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz" class="quiz-section">
+  <div class="section-label">Test Yourself</div>
+  <h2 class="section-title">GA4 Knowledge Quiz</h2>
+  <p class="section-sub">10 questions covering all the key areas. See how well you understand analytics.</p>
+  <div class="quiz-wrap">
+    <div class="quiz-progress" id="quizProgress"></div>
+    <div class="quiz-card" id="quizCard"></div>
+    <div class="quiz-nav">
+      <div class="quiz-score" id="quizScore">Score: 0 / 0</div>
+      <button class="btn-ghost" id="quizNext" onclick="nextQuestion()" style="display:none">Next Question →</button>
+    </div>
+  </div>
+</section>
+
+<!-- REPORTS MAP -->
+<section id="reports">
+  <div class="section-label">Full Reports Map</div>
+  <h2 class="section-title">Every GA4 Report, Mapped</h2>
+  <p class="section-sub">All 25+ report pages from the GA4 demo account — click any to learn what it does.</p>
+  <div class="reports-map" id="reportsMap"></div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">GA4Hub</div>
+  <p>A free learning resource for Google Analytics 4 · Based on GA4 Demo Account Data</p>
+  <p style="margin-top:.5rem">Built for marketers, educators, students, and business owners</p>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle"></div>
+      <button class="modal-close" onclick="document.getElementById('modalOverlay').classList.remove('open')">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════ DATA ═══════════════════════════
+
+const concepts = [
+  { icon: "📊", title: "Reports Hub", color: "#4f9cf9", tag: "Overview",
+    desc: "Your website's main control room. Shows a high-level summary of users, sessions, revenue, and top pages — all in one place.",
+    detail: `<p>The Reports Hub is the first thing you see when you open GA4. Think of it as the <strong>dashboard of your car</strong> — you see speed, fuel, and warning lights all at once without opening the engine.</p><div class="highlight"><strong>What you see:</strong> Active users right now, new users this week, engagement rate, top pages, revenue, and channel performance.</div><p>Check this every Monday morning. If something looks wrong here, dig deeper into the specific report to find the cause.</p>` },
+  { icon: "⚡", title: "Realtime", color: "#34d399", tag: "Live Data",
+    desc: "Watch your website live. See active users right now, which pages they're on, and where they came from — refreshed every second.",
+    detail: `<p>Realtime shows you what is happening <strong>at this exact moment</strong> on your website. Data refreshes every few seconds.</p><div class="highlight"><strong>Best uses:</strong> Check immediately after sending an email campaign, launching a social post, running a live webinar, or deploying a website change.</div><p><strong>Important:</strong> Realtime data does not save. For historical analysis, use standard reports instead.</p>` },
+  { icon: "📡", title: "Acquisition", color: "#a78bfa", tag: "Traffic Sources",
+    desc: "Discover where your visitors come from — Google, social media, email, paid ads, or direct. The starting point for all marketing analysis.",
+    detail: `<p>Acquisition answers the most important marketing question: <strong>"How are people finding us?"</strong></p><div class="highlight"><strong>Two key reports:</strong><br>• <strong>User Acquisition</strong> = How did this person find us for the FIRST TIME?<br>• <strong>Traffic Acquisition</strong> = Why did they come back this specific session?</div><p>Also includes Cohort analysis (do new users return?) and Non-Google Cost tracking for Facebook/LinkedIn ads.</p>` },
+  { icon: "💬", title: "Engagement", color: "#fbbf24", tag: "User Behavior",
+    desc: "Are visitors actually engaging with your content? Tracks time on site, pages read, events fired, and whether visits were meaningful.",
+    detail: `<p>Getting people to your site is half the battle. Engagement shows you <strong>what they do once they arrive</strong>.</p><div class="highlight"><strong>Key metric:</strong> Engagement Rate = % of sessions where someone stayed 10+ seconds, viewed 2+ pages, or completed a goal. Aim for 55%+.</div><p>Sub-reports include: Top Events (all user actions), Pages & Screens (content performance), and Landing Pages (entry points).</p>` },
+  { icon: "💰", title: "Monetization", color: "#f87171", tag: "Revenue",
+    desc: "Track every dollar earned. See which products sell, where customers drop off in checkout, and which promotions actually work.",
+    detail: `<p>The Monetization section is all about <strong>revenue and purchase behavior</strong>.</p><div class="highlight"><strong>Key reports:</strong><br>• E-commerce Products — what's selling<br>• Shopping Funnel — where customers drop off<br>• Checkout Funnel — payment step analysis<br>• Promotions — banner/offer performance<br>• Transaction IDs — individual sale records</div><p>Use the Shopping Funnel weekly to catch drop-off increases before they hurt revenue.</p>` },
+  { icon: "🔄", title: "Retention", color: "#34d399", tag: "Loyalty",
+    desc: "How many visitors come back? Measures Day 1, Day 7, and Day 30 return rates. The health check for your platform's stickiness.",
+    detail: `<p>Acquisition is expensive. <strong>Retention is where profit lives.</strong></p><div class="highlight"><strong>Healthy benchmarks:</strong><br>• Day 1 return rate: 25–40%<br>• Day 7 return rate: 10–20%<br>• Day 30 return rate: 5–15%</div><p>If Day 1 retention is below 10%, your onboarding experience needs work. Users aren't finding a reason to come back within the first 24 hours.</p>` },
+  { icon: "👥", title: "Demographics", color: "#a78bfa", tag: "Audience",
+    desc: "Who are your visitors? Age, gender, location, language, and interests — essential for targeting and content strategy.",
+    detail: `<p>Demographics shows you <strong>who your audience actually is</strong> — which may differ from who you think you're targeting.</p><div class="highlight"><strong>Dimensions covered:</strong> Age group, gender, country, city, language, and interest categories (based on browsing behavior).</div><p>Note: Only users with interest-based advertising enabled are included. Some visitors will show as "Unknown" — this is normal.</p>` },
+  { icon: "📱", title: "Technology", color: "#4f9cf9", tag: "Devices",
+    desc: "What devices and browsers are your users on? Critical for identifying performance issues on mobile, specific browsers, or operating systems.",
+    detail: `<p>Technology reports reveal <strong>how users access your site</strong> — and whether their experience is broken.</p><div class="highlight"><strong>Key insight:</strong> If 70% of your traffic is mobile but mobile Engagement Rate is 28% vs 67% on desktop, your mobile experience has a serious problem that's costing you users.</div><p>Check device breakdown monthly. Filter Engagement Rate and Conversion Rate by device to spot platform-specific issues.</p>` },
+];
+
+const calcs = [
+  { title: "Engagement Rate", icon: "💬", formula: "Engaged Sessions / Total Sessions × 100",
+    fields: [{id:"eng_engaged",label:"Engaged Sessions"},{id:"eng_total",label:"Total Sessions"}],
+    compute: v => v[0]/v[1]*100, unit: "%", thresholds: [[55,"green","Healthy"],[40,"amber","Watch"],[0,"red","Low"]] },
+  { title: "Bounce Rate", icon: "🚪", formula: "(Sessions − Engaged Sessions) / Sessions × 100",
+    fields: [{id:"bnc_sessions",label:"Total Sessions"},{id:"bnc_engaged",label:"Engaged Sessions"}],
+    compute: v => (v[0]-v[1])/v[0]*100, unit: "%", thresholds: [[0,"green","Good"],[45,"amber","Watch"],[60,"red","High Bounce"]], reverse: true },
+  { title: "Conversion Rate", icon: "🎯", formula: "Converting Sessions / All Sessions × 100",
+    fields: [{id:"cvr_conv",label:"Conversions"},{id:"cvr_sess",label:"Total Sessions"}],
+    compute: v => v[0]/v[1]*100, unit: "%", thresholds: [[3,"green","Strong"],[1,"amber","Average"],[0,"red","Low"]] },
+  { title: "Average Order Value", icon: "💳", formula: "Total Revenue / Number of Transactions",
+    fields: [{id:"aov_rev",label:"Total Revenue ($)"},{id:"aov_trx",label:"Transactions"}],
+    compute: v => v[0]/v[1], unit: "$", prefix: true, thresholds: [[150,"green","High AOV"],[50,"amber","Moderate"],[0,"red","Low AOV"]] },
+  { title: "Cart Abandonment Rate", icon: "🛒", formula: "(Add to Cart − Purchases) / Add to Cart × 100",
+    fields: [{id:"car_add",label:"Add to Cart Events"},{id:"car_pur",label:"Purchases"}],
+    compute: v => (v[0]-v[1])/v[0]*100, unit: "%", thresholds: [[0,"green","Low Abandon"],[60,"amber","Watch"],[75,"red","High Abandon"]], reverse: true },
+  { title: "Return on Ad Spend", icon: "📈", formula: "Revenue from Ads / Ad Spend × 100",
+    fields: [{id:"roas_rev",label:"Ad Revenue ($)"},{id:"roas_spend",label:"Ad Spend ($)"}],
+    compute: v => v[0]/v[1], unit: "x ROAS", thresholds: [[4,"green","Profitable"],[2,"amber","Breaking Even"],[0,"red","Loss"]] },
+  { title: "Day 1 Retention", icon: "🔄", formula: "Users returning Day 1 / Cohort Size × 100",
+    fields: [{id:"ret_back",label:"Users Returned Day 1"},{id:"ret_cohort",label:"Total Cohort Size"}],
+    compute: v => v[0]/v[1]*100, unit: "%", thresholds: [[30,"green","Strong"],[15,"amber","Average"],[0,"red","Weak"]] },
+  { title: "Revenue per User", icon: "💵", formula: "Total Revenue / Active Users",
+    fields: [{id:"rpu_rev",label:"Total Revenue ($)"},{id:"rpu_users",label:"Active Users"}],
+    compute: v => v[0]/v[1], unit: "$", prefix: true, thresholds: [[20,"green","High Value"],[5,"amber","Moderate"],[0,"red","Low"]] },
+];
+
+const funnelData = [
+  { name: "View Product", emoji: "👁️", count: 10000, color: "#4f9cf9", pct: 100,
+    what: "Students see your product/course page", why: "Entry point — all potential buyers start here",
+    tip: "Ensure your product page loads fast (under 3 seconds) and clearly communicates the course value within the first 3 seconds of viewing." },
+  { name: "Add to Cart", emoji: "🛒", count: 3500, color: "#a78bfa", pct: 35,
+    what: "Students click 'Add to Cart' or 'Enroll'", why: "35% of viewers take this action — 65% drop here",
+    tip: "If drop-off is >70% here, review your pricing, course description clarity, and whether you show enough social proof (reviews, student count, instructor credentials)." },
+  { name: "Begin Checkout", emoji: "💳", count: 2100, color: "#fbbf24", pct: 21,
+    what: "Students enter the checkout flow", why: "60% of cart-adders proceed to checkout",
+    tip: "Friction between cart and checkout is usually caused by: requiring account creation, unexpected fees, or unclear 'what happens next' messaging." },
+  { name: "Add Payment Info", emoji: "🔐", count: 1400, color: "#f97316", pct: 14,
+    what: "Students enter payment details", why: "67% of checkout starters reach payment step",
+    tip: "Trust signals matter most here. Ensure you display: SSL certificate badge, accepted payment logos, money-back guarantee, and no hidden fees." },
+  { name: "Purchase Complete", emoji: "✅", count: 980, color: "#34d399", pct: 9.8,
+    what: "Payment processed — student enrolled!", why: "9.8% overall conversion rate from viewers",
+    tip: "Aim for 15%+ from View to Purchase for digital courses. Send an immediate confirmation email and welcome sequence to reduce buyer's remorse and refund requests." },
+];
+
+const glossaryData = [
+  { term: "Active User", def: "A visitor who had at least one engaged session in the selected period. GA4's primary user metric — different from Total Users." },
+  { term: "Bounce Rate", def: "Percentage of sessions where the visitor left without doing anything meaningful. In GA4 this is the inverse of Engagement Rate." },
+  { term: "Channel", def: "The broad category of where traffic came from — Organic Search, Email, Paid Social, Direct, Referral, etc." },
+  { term: "Cohort", def: "A group of users who all completed the same action (like first visit) during the same time period. Used for retention analysis." },
+  { term: "Conversion", def: "Any event you've marked as important in GA4 Admin — a purchase, form submission, sign-up, or any goal completion." },
+  { term: "CPA (Cost per Acquisition)", def: "Total ad spend divided by the number of conversions. How much it costs you to get one paying customer." },
+  { term: "Custom Dimension", def: "Extra descriptive information you attach to events or users beyond GA4's defaults — e.g., course_category, membership_tier." },
+  { term: "Custom Event", def: "An event you define and fire yourself using gtag.js for actions GA4 doesn't track automatically." },
+  { term: "Data-Driven Attribution", def: "GA4's ML-powered attribution model that assigns fractional conversion credit based on actual user path data." },
+  { term: "Dimension", def: "A descriptive attribute used to segment data — Country, Device, Page Title, Source/Medium are all dimensions." },
+  { term: "E-commerce CVR", def: "The percentage of sessions that result in a purchase. Calculated as: Transactions / Sessions × 100." },
+  { term: "Engaged Session", def: "A session where the user was active for 10+ seconds, viewed 2+ pages, OR completed at least one conversion event." },
+  { term: "Engagement Rate", def: "Percentage of sessions that were 'engaged'. Formula: Engaged Sessions / Total Sessions × 100. Aim for 55%+." },
+  { term: "Event", def: "The fundamental unit of GA4 data. Every action recorded — page view, click, scroll, purchase — is an event." },
+  { term: "Event Parameter", def: "Extra context attached to an event. A 'purchase' event has parameters like transaction_id, value, currency, items." },
+  { term: "First Visit", def: "An automatically collected event that fires the very first time a new user visits your site. Used to count new users." },
+  { term: "Funnel", def: "The step-by-step path users follow toward a goal. GA4's Funnel Exploration shows completion and drop-off at each step." },
+  { term: "GA4", def: "Google Analytics 4 — Google's current analytics platform. Event-based, privacy-first, with ML predictions built in." },
+  { term: "Google Signals", def: "A GA4 setting that enables cross-device tracking and demographic data for users signed into Google accounts." },
+  { term: "gtag.js", def: "Google's JavaScript library you add to your website to send event data to GA4. The most common implementation method." },
+  { term: "Landing Page", def: "The first page a visitor sees when they arrive on your site from any channel. Multiple pages can be landing pages." },
+  { term: "Metric", def: "A quantitative measurement — Sessions (4,200), Revenue ($12,400), Engagement Rate (62%) are all metrics." },
+  { term: "Page View", def: "An automatically collected event (page_view) that fires every time any page on your site loads." },
+  { term: "Parameter", def: "Additional data attached to a GA4 event providing context about what happened and to what." },
+  { term: "Property", def: "A GA4 account for a specific website or app. Each property has a unique Measurement ID (G-XXXXXXXX)." },
+  { term: "Realtime", def: "GA4 reports showing live activity on your site — active users, current pages, and live conversions. Refreshes every few seconds." },
+  { term: "Retention Rate", def: "Percentage of users from a cohort who return on a specific day. Day 1, Day 7, and Day 30 are standard benchmarks." },
+  { term: "ROAS", def: "Return on Ad Spend. Revenue generated divided by ad spend. A ROAS of 4x means $4 back for every $1 spent." },
+  { term: "Session", def: "One continuous visit to your website. Starts when a user arrives; ends after 30 minutes of inactivity or at midnight." },
+  { term: "Session Start", def: "An automatically collected event that fires at the beginning of every new session." },
+  { term: "Stickiness", def: "DAU divided by MAU (Daily Active Users / Monthly Active Users). Measures how frequently users return each month." },
+  { term: "Traffic Source", def: "The specific platform or campaign that brought a session — e.g., google, newsletter_june, instagram_bio." },
+  { term: "Universal Analytics (UA)", def: "The previous version of Google Analytics, replaced by GA4 in July 2023. Session-based instead of event-based." },
+  { term: "User", def: "A unique individual tracked by GA4 using a browser Client ID or a User ID you assign after login." },
+  { term: "User ID", def: "A custom identifier you pass to GA4 (usually your database user ID) to track users across devices and sessions." },
+  { term: "UTM Parameters", def: "Tags added to URLs to tell GA4 which campaign a click came from. Five parameters: source, medium, campaign, content, term." },
+  { term: "utm_campaign", def: "UTM parameter naming the specific campaign — e.g., utm_campaign=summer_sale_2025." },
+  { term: "utm_medium", def: "UTM parameter for the marketing channel type — e.g., cpc, email, social, affiliate." },
+  { term: "utm_source", def: "UTM parameter for the origin platform — e.g., google, newsletter, facebook, linkedin." },
+  { term: "View Item", def: "A recommended GA4 e-commerce event fired when a user views a product or course detail page." },
+];
+
+const quizData = [
+  { q: "A student opens your homepage and reads for 45 seconds, then leaves. Is this session counted as 'engaged'?",
+    ctx: "GA4's engagement threshold is 10 seconds of active time, 2+ page views, OR a conversion.",
+    opts: ["No — they only visited one page", "Yes — they were active for 45 seconds (over the 10-second threshold)", "Only if they scrolled 90%", "Only if they came from Google"],
+    correct: 1, explain: "Correct! An engaged session requires: 10+ seconds active, OR 2+ page views, OR 1+ conversion. Staying 45 seconds qualifies on the first criterion alone." },
+  { q: "Your Engagement Rate dropped from 60% to 35% this week. What does this most likely mean?",
+    ctx: "Engagement Rate = Engaged Sessions / Total Sessions × 100",
+    opts: ["More students are buying courses", "Traffic quality dropped — wrong audience or misleading ads", "Your website is loading faster", "Mobile users increased"],
+    correct: 1, explain: "A significant Engagement Rate drop usually means lower quality traffic — visitors are arriving and leaving immediately. Check if a new ad campaign is targeting the wrong audience, or if a high-traffic source recently changed." },
+  { q: "What is the difference between User Acquisition and Traffic Acquisition?",
+    ctx: "These are two different reports in GA4's Acquisition section.",
+    opts: ["They are the same report with different names", "User Acquisition = first-time channel; Traffic Acquisition = session-level channel", "User Acquisition tracks paid ads only", "Traffic Acquisition only counts mobile users"],
+    correct: 1, explain: "User Acquisition shows which channel brought a user for the FIRST TIME EVER. Traffic Acquisition shows which channel drove each individual session (including return visits)." },
+  { q: "Your cart abandonment rate is 82%. A customer adds a $299 course to their cart. What is the probability they actually buy it?",
+    ctx: "Cart Abandonment Rate = (Add to Cart - Purchases) / Add to Cart × 100",
+    opts: ["82% chance they buy", "18% chance they buy", "50% chance they buy", "Impossible to calculate"],
+    correct: 1, explain: "If 82% abandon, then 18% complete the purchase. So only about 1 in 5 students who add to cart will buy. Industry average for digital products is around 30-40% — at 18% there's significant room to improve with cart recovery emails." },
+  { q: "What does a 'first_visit' event in GA4 indicate?",
+    ctx: "first_visit is one of GA4's automatically collected events.",
+    opts: ["A returning user's first session today", "The very first time this user has ever visited your site", "The first page a user visits each session", "A user visiting for the first time this month"],
+    correct: 1, explain: "first_visit fires exactly once per user — the very first time they visit your site. It is how GA4 counts New Users. If the same person comes back tomorrow, no new first_visit event fires." },
+  { q: "Your checkout funnel shows: 1000 begin checkout → 400 add payment info → 200 complete purchase. What is your checkout completion rate?",
+    ctx: "Completion rate = final step / first step × 100",
+    opts: ["20% (200/1000)", "50% (200/400)", "40% (400/1000)", "80% (200/250)"],
+    correct: 0, explain: "Overall checkout completion rate = 200/1000 = 20%. The industry average for digital products is 45-65%, so 20% indicates significant friction. The biggest drop is from begin_checkout to payment info — investigate what's causing hesitation there." },
+  { q: "What does a UTM parameter do?",
+    ctx: "Example: yoursite.com?utm_source=newsletter&utm_medium=email&utm_campaign=june_promo",
+    opts: ["Speeds up your website loading time", "Tells GA4 exactly which campaign or channel a click came from", "Tracks which browser a user is on", "Encrypts user data for privacy"],
+    correct: 1, explain: "UTM parameters are tags you add to URLs. When someone clicks a tagged link, GA4 reads these tags and attributes the session to the right source, medium, and campaign. Without UTMs, email and social traffic often gets misattributed as 'direct'." },
+  { q: "Day 7 retention is 5% for your January cohort. What does this mean?",
+    ctx: "Retention Rate = Users active on Day N / Original Cohort Size × 100",
+    opts: ["95% of January users became paying customers", "Only 5 out of every 100 January new users came back within 7 days", "5% of all users are from January", "Your site is working perfectly"],
+    correct: 1, explain: "5% Day-7 retention means that of every 100 new users who arrived in January, only 5 came back within a week. The healthy range for EdTech is 10-20%. Consider welcome email sequences, progress reminders, or free introductory content to improve early return rates." },
+  { q: "What does the Realtime report show that standard reports don't?",
+    ctx: "Think about the fundamental difference in data freshness.",
+    opts: ["Historical data from the past year", "What is happening on your site at this exact moment", "Conversion rates by channel", "User demographics and age groups"],
+    correct: 1, explain: "Realtime shows live data — active users right now, current pages being viewed, and conversions happening this second. Standard reports show aggregated historical data. Realtime is best for monitoring campaigns as they launch, not for in-depth analysis." },
+  { q: "Your ROAS from Facebook Ads is 1.5x. You spent $2,000. What is your revenue, and is this profitable?",
+    ctx: "ROAS = Revenue / Ad Spend. A ROAS of 1.5x means $1.50 back per $1 spent.",
+    opts: ["Revenue = $3,000 — profitable if margins allow", "Revenue = $3,000 — always profitable", "Revenue = $1,333 — breaking even", "Revenue = $2,000 — exactly breaking even"],
+    correct: 0, explain: "Revenue = $2,000 × 1.5 = $3,000. Whether this is profitable depends on your product margins. If your course costs $299 and has 80% margin, a 1.5x ROAS likely breaks even after costs. Most EdTech companies target 3x+ ROAS to be meaningfully profitable." },
+];
+
+const reportsMapData = {
+  "Overview & Navigation": [
+    { name: "Reports Hub", dot: "#4f9cf9", info: "High-level overview of all key metrics — your GA4 homepage. Check weekly for health monitoring." },
+    { name: "Realtime Overview", dot: "#34d399", info: "Live activity right now. Active users, current pages, live conversions. Refreshes every few seconds." },
+    { name: "Realtime Pages", dot: "#34d399", info: "Which specific pages are being viewed at this exact moment. Use during launches and campaigns." },
+  ],
+  "Acquisition Reports": [
+    { name: "Acquisition Overview", dot: "#a78bfa", info: "High-level view of all traffic sources — new vs returning users across all channels." },
+    { name: "User Acquisition", dot: "#a78bfa", info: "First-touch channel attribution. Shows which channels brought users for their very first visit." },
+    { name: "Traffic Acquisition", dot: "#a78bfa", info: "Session-level attribution. Shows which channels drive each visit, including return visits." },
+    { name: "User Acquisition Cohorts", dot: "#a78bfa", info: "Group new users by arrival week and track how many return over time. Essential for retention strategy." },
+    { name: "Lead Acquisition", dot: "#a78bfa", info: "Tracks lead generation events — form fills, sign-ups, email captures across all channels." },
+    { name: "Non-Google Cost", dot: "#a78bfa", info: "Import spend data from Facebook, LinkedIn, and other ad platforms to calculate ROAS alongside Google Ads." },
+  ],
+  "Engagement Reports": [
+    { name: "Engagement Overview", dot: "#fbbf24", info: "Summary of engagement metrics: engaged sessions, engagement rate, average engagement time." },
+    { name: "Top Events", dot: "#fbbf24", info: "Complete list of all events firing on your site, ranked by count. Shows what users are doing." },
+    { name: "Conversions", dot: "#fbbf24", info: "All events marked as conversions — goal completions by event name, with count and rate." },
+    { name: "Pages and Screens", dot: "#fbbf24", info: "Every page ranked by views, users, engagement time, and conversions. Core content analysis report." },
+    { name: "Landing Pages", dot: "#fbbf24", info: "Entry pages ranked by sessions. Shows which pages act as doors into your site." },
+  ],
+  "Monetization Reports": [
+    { name: "Monetization Overview", dot: "#f87171", info: "Revenue summary, e-commerce metrics, and conversion KPIs in one dashboard view." },
+    { name: "E-commerce Products", dot: "#f87171", info: "Individual product performance: views, cart adds, purchases, revenue. Your catalog scoreboard." },
+    { name: "Shopping Funnel", dot: "#f87171", info: "Step-by-step view → cart → checkout → purchase. Identifies where customers drop off." },
+    { name: "Checkout Funnel", dot: "#f87171", info: "Detailed checkout step analysis: billing, payment, confirmation. Find payment-specific friction." },
+    { name: "Promotions", dot: "#f87171", info: "Promotional banner and offer performance: views, clicks, click rate, and resulting purchases." },
+    { name: "Transaction ID Report", dot: "#f87171", info: "Individual transaction records. Use for reconciliation, auditing, and investigating specific orders." },
+  ],
+  "Retention Reports": [
+    { name: "Retention Overview", dot: "#34d399", info: "New vs returning user mix, Day 1/7/30 retention curves, and user lifetime engagement patterns." },
+  ],
+  "Demographics Reports": [
+    { name: "Demographics Overview", dot: "#4f9cf9", info: "Age, gender, country summary across your audience with top-level KPI comparisons." },
+    { name: "Demographics Detail", dot: "#4f9cf9", info: "Deep-dive: filter any demographic dimension against metrics like CVR, revenue, engagement." },
+    { name: "Interests Report", dot: "#4f9cf9", info: "Google Affinity and In-Market segments — what topics your audience cares about across the web." },
+  ],
+  "Technology Reports": [
+    { name: "Technology Overview", dot: "#f97316", info: "Device, OS, browser, and screen resolution summary. Spot platform-level performance issues." },
+    { name: "Technology Detail", dot: "#f97316", info: "Cross any tech dimension with metrics. Find which browser has a broken checkout or which device converts poorly." },
+  ],
+};
+
+// ═══════════════════════════ RENDER CONCEPTS ═══════════════════════════
+
+function renderConcepts() {
+  const grid = document.getElementById('conceptsGrid');
+  concepts.forEach(c => {
+    const div = document.createElement('div');
+    div.className = 'concept-card';
+    div.style.setProperty('--card-color', c.color);
+    div.innerHTML = `
+      <div class="concept-icon">${c.icon}</div>
+      <h3>${c.title}</h3>
+      <p>${c.desc}</p>
+      <span class="concept-tag" style="background:${c.color}22;color:${c.color}">${c.tag}</span>
+    `;
+    div.onclick = () => openModal(c.title, c.detail);
+    grid.appendChild(div);
+  });
+}
+
+// ═══════════════════════════ RENDER CALCULATORS ═══════════════════════
+
+function renderCalcs() {
+  const grid = document.getElementById('calcGrid');
+  calcs.forEach(c => {
+    const div = document.createElement('div');
+    div.className = 'calc-card';
+    div.innerHTML = `
+      <h3>${c.icon} ${c.title}</h3>
+      <span class="formula">${c.formula}</span>
+      <div class="calc-inputs">
+        ${c.fields.map(f => `
+          <div class="calc-field">
+            <label>${f.label}</label>
+            <input type="number" id="${f.id}" placeholder="0" oninput="computeCalc('${c.title}')">
+          </div>
+        `).join('')}
+      </div>
+      <div class="calc-result" id="result_${c.title.replace(/\s/g,'_')}">
+        <div class="result-num">—</div>
+        <div class="result-label">Enter values above</div>
+      </div>
+    `;
+    grid.appendChild(div);
+  });
+}
+
+function computeCalc(title) {
+  const c = calcs.find(x => x.title === title);
+  const vals = c.fields.map(f => parseFloat(document.getElementById(f.id).value));
+  if (vals.some(v => isNaN(v) || v === 0)) return;
+  const result = c.compute(vals);
+  if (!isFinite(result)) return;
+  const key = `result_${title.replace(/\s/g,'_')}`;
+  const el = document.getElementById(key);
+  const display = c.prefix ? `$${result.toFixed(2)}` : `${result.toFixed(1)}${c.unit}`;
+
+  let health = '';
+  if (c.reverse) {
+    if (result < c.thresholds[1][0]) health = `<span class="health-pill health-green">${c.thresholds[0][2]}</span>`;
+    else if (result < c.thresholds[2][0]) health = `<span class="health-pill health-amber">${c.thresholds[1][2]}</span>`;
+    else health = `<span class="health-pill health-red">${c.thresholds[2][2]}</span>`;
+  } else {
+    const sorted = [...c.thresholds].sort((a,b) => b[0]-a[0]);
+    const match = sorted.find(t => result >= t[0]);
+    if (match) health = `<span class="health-pill health-${match[1]}">${match[2]}</span>`;
+  }
+
+  el.innerHTML = `<div class="result-num">${display}</div><div class="result-label">${title}</div>${health}`;
+}
+
+// ═══════════════════════════ FUNNEL ═══════════════════════════
+
+function renderFunnel() {
+  const stages = document.getElementById('funnelStages');
+  funnelData.forEach((s, i) => {
+    const div = document.createElement('div');
+    div.className = 'funnel-stage';
+    div.style.setProperty('--stage-color', s.color);
+    div.style.setProperty('--pct', s.pct + '%');
+    div.innerHTML = `
+      <div class="stage-top">
+        <span class="stage-name">${s.emoji} ${s.name}</span>
+        <span class="stage-num">${s.count.toLocaleString()} users (${s.pct}%)</span>
+      </div>
+      <div class="stage-sub">${s.what}</div>
+    `;
+    div.onclick = () => selectFunnelStage(i, div);
+    stages.appendChild(div);
+  });
+}
+
+function selectFunnelStage(i, el) {
+  document.querySelectorAll('.funnel-stage').forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
+  const s = funnelData[i];
+  const prev = i > 0 ? funnelData[i-1] : null;
+  const dropPct = prev ? ((prev.count - s.count)/prev.count*100).toFixed(1) : '—';
+  document.getElementById('funnelDetail').innerHTML = `
+    <h3>${s.emoji} ${s.name}</h3>
+    <div class="detail-stat">
+      <div class="ds-label">Users at this stage</div>
+      <div class="ds-value" style="color:${s.color}">${s.count.toLocaleString()}</div>
+    </div>
+    <div class="detail-stat">
+      <div class="ds-label">Overall funnel retention</div>
+      <div class="ds-value">${s.pct}%</div>
+    </div>
+    ${prev ? `<div class="detail-stat">
+      <div class="ds-label">Drop-off from previous step</div>
+      <div class="ds-value" style="color:#f87171">−${dropPct}%</div>
+    </div>` : ''}
+    <p style="color:var(--muted);font-size:.9rem;margin-bottom:0">${s.why}</p>
+    <div class="detail-tip">
+      <div class="tip-label">💡 Optimisation Tip</div>
+      <p>${s.tip}</p>
+    </div>
+  `;
+}
+
+// ═══════════════════════════ GLOSSARY ═══════════════════════════
+
+function renderGlossary() {
+  const grid = document.getElementById('glossaryGrid');
+  glossaryData.sort((a,b) => a.term.localeCompare(b.term)).forEach(g => {
+    const div = document.createElement('div');
+    div.className = 'glossary-item';
+    div.dataset.term = g.term.toLowerCase();
+    div.dataset.def = g.def.toLowerCase();
+    div.innerHTML = `<div class="term">${g.term}</div><div class="def">${g.def}</div>`;
+    grid.appendChild(div);
+  });
+}
+
+function filterGlossary(q) {
+  q = q.toLowerCase();
+  document.querySelectorAll('.glossary-item').forEach(el => {
+    el.classList.toggle('hidden', !el.dataset.term.includes(q) && !el.dataset.def.includes(q));
+  });
+}
+
+// ═══════════════════════════ QUIZ ═══════════════════════════
+
+let quizIdx = 0, quizScore = 0, quizAnswered = false;
+
+function renderQuizProgress() {
+  const p = document.getElementById('quizProgress');
+  p.innerHTML = quizData.map((_, i) => `<div class="quiz-dot ${i < quizIdx ? 'done' : i === quizIdx ? 'active' : ''}"></div>`).join('');
+}
+
+function renderQuestion() {
+  if (quizIdx >= quizData.length) {
+    document.getElementById('quizCard').innerHTML = `
+      <div style="text-align:center;padding:2rem">
+        <div style="font-size:4rem;margin-bottom:1rem">${quizScore >= 8 ? '🏆' : quizScore >= 5 ? '🎓' : '📚'}</div>
+        <div style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:var(--blue)">${quizScore} / ${quizData.length}</div>
+        <div style="color:var(--muted);margin:.5rem 0 1.5rem">${quizScore >= 8 ? 'Excellent! You understand GA4 well.' : quizScore >= 5 ? 'Good work — review the missed questions.' : 'Keep learning — revisit the concepts above!'}</div>
+        <button class="btn-primary" onclick="restartQuiz()">Try Again</button>
+      </div>
+    `;
+    document.getElementById('quizNext').style.display = 'none';
+    return;
+  }
+  const q = quizData[quizIdx];
+  quizAnswered = false;
+  document.getElementById('quizNext').style.display = 'none';
+  document.getElementById('quizScore').textContent = `Score: ${quizScore} / ${quizIdx}`;
+  renderQuizProgress();
+  document.getElementById('quizCard').innerHTML = `
+    <div class="quiz-q">Q${quizIdx+1}. ${q.q}</div>
+    <div class="quiz-context">${q.ctx}</div>
+    <div class="quiz-options">
+      ${q.opts.map((o,i) => `
+        <div class="quiz-option" onclick="answerQuiz(${i})">
+          <div class="opt-letter">${'ABCD'[i]}</div>
+          ${o}
+        </div>
+      `).join('')}
+    </div>
+    <div class="quiz-feedback" id="qfb"></div>
+  `;
+}
+
+function answerQuiz(i) {
+  if (quizAnswered) return;
+  quizAnswered = true;
+  const q = quizData[quizIdx];
+  const opts = document.querySelectorAll('.quiz-option');
+  opts[q.correct].classList.add('correct');
+  if (i !== q.correct) opts[i].classList.add('wrong');
+  else quizScore++;
+  const fb = document.getElementById('qfb');
+  fb.className = `quiz-feedback show ${i === q.correct ? 'correct-fb' : 'wrong-fb'}`;
+  fb.innerHTML = `<p>${i === q.correct ? '✅ ' : '❌ '}<strong>${i === q.correct ? 'Correct!' : 'Not quite.'}</strong> ${q.explain}</p>`;
+  document.getElementById('quizNext').style.display = 'block';
+  document.getElementById('quizScore').textContent = `Score: ${quizScore} / ${quizIdx+1}`;
+}
+
+function nextQuestion() { quizIdx++; renderQuestion(); }
+function restartQuiz() { quizIdx = 0; quizScore = 0; renderQuestion(); }
+
+// ═══════════════════════════ REPORTS MAP ═══════════════════════════
+
+function renderReportsMap() {
+  const container = document.getElementById('reportsMap');
+  Object.entries(reportsMapData).forEach(([group, items]) => {
+    const div = document.createElement('div');
+    div.className = 'report-group';
+    div.innerHTML = `
+      <div class="report-group-title">${group}</div>
+      <div class="report-items">
+        ${items.map(item => `
+          <div class="report-item" style="--dot-color:${item.dot}" onclick="openModal('${item.name}','<p>${item.info}</p>')">
+            <span class="ri-dot"></span>
+            ${item.name}
+          </div>
+        `).join('')}
+      </div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+// ═══════════════════════════ MODAL ═══════════════════════════
+
+function openModal(title, body) {
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalBody').innerHTML = body;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modalOverlay')) {
+    document.getElementById('modalOverlay').classList.remove('open');
+  }
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') document.getElementById('modalOverlay').classList.remove('open');
+});
+
+// ═══════════════════════════ INIT ═══════════════════════════
+renderConcepts();
+renderCalcs();
+renderFunnel();
+renderGlossary();
+renderQuestion();
+renderReportsMap();
+</script>
+</body>
+</html>
